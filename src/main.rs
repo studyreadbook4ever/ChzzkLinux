@@ -115,7 +115,7 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
   if quality == "0" {
     println!("Starting on RADIO Mode...");
     let status = Command::new("mpv").arg(hls_url)
-      .args("--hls-bitrate={}", bitrate_limit); // 명목상 144p로 세팅.
+      .arg("--hls-bitrate=500000"); // 명목상 144p로 세팅.
       .arg("--vid=no")
       .arg("--force-window=no")
       .arg("--audio-display=no")
