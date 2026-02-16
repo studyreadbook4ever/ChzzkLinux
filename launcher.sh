@@ -110,6 +110,8 @@ export WAYLAND_DISPLAY=${WAYLAND_DISPLAY:-"wayland-0"}
 export DISPLAY=${DISPLAY:-":0"}
 export PULSE_SERVER="unix:/run/user/$USER_UID/pulse/native"
 
+export PIPEWIRE_RUNTIME_DIR="/run/user/$USER_UID"
+
 # 일반적인 하나의 프로세스로써 방송 프로그램 실행하는 무난한 버전의 launcher입니다. 최종적으로 컴파일된 
 # -E 옵션으로 위에서 세팅한 환경 변수를 유지한 채, -u 옵션으로 원래 사용자 권한으로 바이너리를 실행합니다.
 sudo -E -u "$REAL_USER" "$BIN_PATH" "$CHANNEL" "$QUALITY"
