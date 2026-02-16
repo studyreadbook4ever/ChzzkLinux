@@ -129,8 +129,9 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
     //.arg("--demuxer-thread=no") low buffer usage
 
     //화면 배치
-    .arg("--autofit=20%")            // 화면 가로 해상도의 20% 크기로 띄움 (원하는 대로 조절하세요)
-    .arg("--geometry=-0+0")          // 우측 끝(-0), 상단 끝(+0) 모서리에 찰싹 붙임
+    .arg("--keepaspect-window=yes")   // 비율 유지
+    .arg("--autofit=30%")             // 모니터 가로 픽셀의 30% 크기에 맞춤
+    .arg("--geometry=-0+0")           // 우측 상단 끝 배치
     .arg("--window-maximized=no")
     .arg("--window-minimized=no")
     .arg("--no-keepaspect-window")    //창크기 조정 불가
@@ -152,11 +153,11 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
     //.arg("--vd-lavc-threads=??") 쓰레드를 얼마로 해줘야하려나..
     .arg("--hwdec=auto-safe")
 
-    .arg("--profile=fast")     //화면 크기맞춤, 각종 고 오버헤드 옵션 전부 비활성화 
-    //.arg("--sws-allow-zimg=no")
-    //.arg("--scale=bilinear")
-    //.arg("--cscale=bilinear")
-    //.arg("--dither-depth=no")계단현상 보정옵션 끄기
+    //.arg("--profile=fast")     //화면 크기맞춤, 각종 고 오버헤드 옵션 전부 비활성화 .. 근데 생각보다 얻는옵션이 적음
+    .arg("--sws-allow-zimg=no")
+    .arg("--scale=bilinear")
+    .arg("--cscale=bilinear")
+    .arg("--dither-depth=no")계단현상 보정옵션 끄기
     //.arg("--correct-downscaling=no")밝기 보정 옵션 끄기
     //.arg("--linear-downscaling=no") 선형축소 x
     //.arg("--sigmoid-upscaling=no") 확대 x
