@@ -10,3 +10,7 @@
 개발 런타임: 구상 2시간 손코딩 5시간(main.rs) 후 AI한테 호환성-mpv 최적화 관련 옵션도움받기 1시간 + .sh 바이트코딩 3시간(ing... Ubuntu-Fedora-Arch를 동시에 지원시키고 싶은데 ㅠㅠㅠ 이게 힘들무ㅠㅠㅠ)
 
 리눅스의 기본적으로 내장된 webKitGTK를 적극적으로 활용해 Chromium의 오버헤드를 줄였습니다 
+
+
+추후 할일 라디오모드 구현(저 overhead 가능하도록, starvation 없도록 짜줘야함), 코어격리 모드 구현(Rust main코드는 둘 다 호환함. taskset 방식으로 특정 코어에 일 모는 방식으로 launcher.sh구현예정. 지원 배포판:Ubuntu, Fedora, Arch)
+, 파이썬으로 채널이름 입력>channels.toml 갱신시키는 코드 구현, gui로 소리 조절기능 구현
