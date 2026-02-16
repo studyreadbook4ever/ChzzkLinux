@@ -157,10 +157,10 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
     .arg("--sws-allow-zimg=no")
     .arg("--scale=bilinear")
     .arg("--cscale=bilinear")
-    .arg("--dither-depth=no")계단현상 보정옵션 끄기
-    //.arg("--correct-downscaling=no")밝기 보정 옵션 끄기
-    //.arg("--linear-downscaling=no") 선형축소 x
-    //.arg("--sigmoid-upscaling=no") 확대 x
+    .arg("--dither-depth=no") //계단현상 보정옵션 끄기
+    //.arg("--correct-downscaling=no") //밝기 보정 옵션 끄기
+    //.arg("--linear-downscaling=no") //선형축소 x
+    //.arg("--sigmoid-upscaling=no") //확대 x
     .arg("--msg-level=ffmpeg=error,demuxer=error")
     .status();
 
