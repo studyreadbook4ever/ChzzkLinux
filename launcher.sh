@@ -18,12 +18,12 @@
 
 # 1. sudo 권한 확인
 if [ "$EUID" -ne 0 ]; then
-  echo "❌ 이 스크립트는 sudo 권한으로 실행해야 합니다. (예: sudo ./.launcher_normal.sh 랄로 1080)"
+  echo "❌ 이 스크립트는 sudo 권한으로 실행해야 합니다. (예: sudo ./.launcher.sh 랄로 1080)"
   exit 1
 fi
 
 if [ "$#" -lt 1 ]; then
-    echo "사용법: sudo ./.launcher_normal.sh <채널명(channels.toml 기준)> [화질(기본:1080)]"
+    echo "사용법: sudo ./.launcher.sh <채널명(channels.toml 기준)> [화질(기본:1080)]"
     exit 1
 fi
 
