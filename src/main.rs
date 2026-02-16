@@ -100,7 +100,7 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
 
   let client = reqwest::Client::new();
   let url = format!("https://api.chzzk.naver.com/service/v2/channels/{}/live-detail", channel_id);
-  let resq = client.get(&url).header("User-Agent", "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/121.0.0.0 Safari/537.36")
+  let resp = client.get(&url).header("User-Agent", "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/121.0.0.0 Safari/537.36")
     .send().await?.json::<ChzzkResponse>().await?;
 
   let content = resp.content.ok_or("We cannot find streaming...")?;
