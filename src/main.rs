@@ -68,8 +68,9 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
     "0" => "500000", //144p, 어차피 버릴거임.
     _ => "0",
   };
-
-  if bitrate_limit != "0" {
+  if quality == "0" {
+    println!("it will be radio mode...");
+  }else if bitrate_limit != "0" {
     println!("quality limit on... {}p will be stream", quality);
   } else {
     println!("quality has no limit... it will stream 1080p");
@@ -115,7 +116,7 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
   if quality == "0" {
     println!("Starting on RADIO Mode...");
     let status = Command::new("mpv").arg(hls_url)
-      .arg("--hls-bitrate=500000"); // 명목상 144p로 세팅.
+      .arg("--hls-bitrate=500000") // 명목상 144p로 세팅.
       .arg("--vid=no")
       .arg("--force-window=no")
       .arg("--audio-display=no")
