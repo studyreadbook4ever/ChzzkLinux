@@ -54,14 +54,14 @@ if ! command -v mpv &> /dev/null || ! sudo -u "$REAL_USER" bash -c "source \$HOM
 
     # OS별 패키지 매니저 분기 (요청하신 로직 탑재)
     if [[ "$OS_ID" == "ubuntu" || "$OS_LIKE" == *"ubuntu"* || "$OS_ID" == "debian" || "$OS_LIKE" == *"debian"* ]]; then
-        echo "📦 [Ubuntu / Debian 계열] apt로 패키지를 설치합니다."
+        echo "[Ubuntu / Debian 계열] apt로 패키지를 설치합니다."
         apt-get update
         apt-get install -y curl gcc pkg-config libssl-dev mpv pipewire
     elif [[ "$OS_ID" == "fedora" || "$OS_LIKE" == *"fedora"* || "$OS_LIKE" == *"rhel"* ]]; then
-        echo "📦 [Fedora / RHEL 계열] dnf로 패키지를 설치합니다."
+        echo "[Fedora / RHEL 계열] dnf로 패키지를 설치합니다."
         dnf install -y curl gcc pkgconf-pkg-config openssl-devel mpv pipewire
     elif [[ "$OS_ID" == "arch" || "$OS_LIKE" == *"arch"* ]]; then
-        echo "📦 [Arch Linux 계열] pacman으로 패키지를 설치합니다."
+        echo "[Arch Linux 계열] pacman으로 패키지를 설치합니다."
         # --needed 옵션: 이미 설치된 패키지는 무시하고 건너뛰어 속도를 비약적으로 높임
         pacman -Sy --needed --noconfirm curl gcc pkgconf openssl mpv pipewire
     else
@@ -77,7 +77,7 @@ if ! command -v mpv &> /dev/null || ! sudo -u "$REAL_USER" bash -c "source \$HOM
 
     # 빌드된 바이너리가 없으면 새로 컴파일
     if [ -z "$BIN_PATH" ]; then
-        echo "⚙️ Rust 프로젝트 빌드 중... (최초 1회만 진행되므로 약간의 시간이 소요됩니다)"
+        echo "Rust 프로젝트 빌드 중... (최초 1회만 진행되므로 약간의 시간이 소요됩니다)"
         # root로 빌드하여 폴더 권한이 꼬이는 것을 막기 위해 일반 유저로 권한을 내려서 빌드
         sudo -i -u "$REAL_USER" bash -c "cd '$(pwd)' && source \$HOME/.cargo/env 2>/dev/null || true && cargo build --release"
         
@@ -97,9 +97,9 @@ fi
 # 4. 실제 뷰어 실행 로직
 # =====================================================================
 echo "==================================================="
-echo " 📺 치지직 PIP 뷰어 실행기 (일반 모드)"
-echo " 🎯 대상 채널: $CHANNEL / 해상도: ${QUALITY}p"
-echo " 🔓 코어 격리: X"
+echo " 치지직 뷰어 실행기"
+echo " 대상 채널: $CHANNEL / 해상도: ${QUALITY}p"
+echo " 코어 격리: X"
 echo "==================================================="
 
 USER_UID=$(id -u "$REAL_USER")
