@@ -114,7 +114,7 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
   //starting by mpv library
   //라디오모드 추가해야...
   let status = Command::new("mpv").arg(hls_url).args(if bitrate_limit != "0" { vec![format!("--hls-bitrate={}", bitrate_limit)] } else { vec![] })
-    .arg("--ao=pipewire")
+    .arg("--ao=pulse,pipewire,alsa,auto")
     .arg("--volume=100")
     .arg("--audio-buffer=0.5") //너무 작아도 커도 이상. 작으면 starvation
     .arg("--audio-wait-open=0") //일단 화면부터
@@ -129,8 +129,8 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
     //.arg("--demuxer-thread=no") low buffer usage
 
     //화면 배치
-    .arg("--geometry=1920x1080+100%+0%")
-    .arg("--autofit=1920x1080")
+    .arg("--autofit=20%")            // 화면 가로 해상도의 20% 크기로 띄움 (원하는 대로 조절하세요)
+    .arg("--geometry=-0+0")          // 우측 끝(-0), 상단 끝(+0) 모서리에 찰싹 붙임
     .arg("--window-maximized=no")
     .arg("--window-minimized=no")
     .arg("--no-keepaspect-window")    //창크기 조정 불가
