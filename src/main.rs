@@ -1,3 +1,17 @@
+// Copyright 2026 studyreadbook4ever
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//     http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
 use serde::Deserialize;
 use std::collections::HashMap;
 use std::env;
@@ -18,6 +32,10 @@ struct Wrapper {
   channels: HashMap<String, String>,
 }
 #[derive(Deserialize)]
+struct ChzzkContent {
+    livePlaybackJson: Option<String>,
+}
+#[derive(Deserialize)]
 struct ChzzkResponse {
   code: i32,
   content: Option<ChzzkContent>,
@@ -35,7 +53,7 @@ struct MediaInfo {
 #[tokio::main]
 async fn main() -> Result<(), Box<dyn std::error::Error>> {
   let args: Vec<String> = env::args().collect();
-  if args.len() < 1 {
+  if args.len() < 2 {
     eprintln!("usage: Program <channel name on channels.toml> <quality(1080/720/480/360/144),default:1080>");
     return Ok(());
   }
@@ -43,12 +61,12 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
   let quality = args.get(2).map(|s| s.as_str()).unwrap_or("1080");
   let bitrate_limit = match quality {
     "1080" => "0",      //제한 x, 1080p
-    "720" => "5000000"  //720p
-    "480" => "2500000"  //480p
-    "360" => "1200000"  //360p
-    "144" => "500000"   //144p
+    "720" => "5000000",  //720p
+    "480" => "2500000",  //480p
+    "360" => "1200000", //360p
+    "144" => "500000",   //144p
     //"0" => 라디오모드 추후 제작예정
-    _ => "0"
+    _ => "0",
   };
 
   if bitrate_limit != "0" {
@@ -64,7 +82,7 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
     // 에러 발생 시 출력할 메시지를 깔끔하게 구성
     let err_msg = format!(
         "channels.toml structure is wrong... check it again...\n\n\
-        right usage: \"랄로\" : \"3497a9a7221cc3ee5d3f95991d9f95e9\""
+        right usage: \"랄로\" = \"3497a9a7221cc3ee5d3f95991d9f95e9\""
     );
 
     // map_err로 메시지를 전달하고, ?로 즉시 에러 반환
@@ -100,15 +118,14 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
     .arg("--volume=100")
     .arg("--audio-buffer=0.5") //너무 작아도 커도 이상. 작으면 starvation
     .arg("--audio-wait-open=0") //일단 화면부터
-    .arg("--framedrop=vo")
+    .arg("--framedrop=vo")     //오디오 싱크 우선
     .arg("--video-sync=display-resample") //display-resample(싱크) vs audio(딜레이 잡기) 근데 A-V싱크가 압도적으로 중요하니..
     .arg("--autosync=30")
     .arg("--stream-buffer-size=1MiB")
-    //.arg("--cache=yes") 캐시 예스하면 자체 치트키 가능 근데 저사양 컴퓨터 최적화에 맞추는 코드니까 지원x..
-    .arg("--no-cache")
-    .arg("--demuxer-max-bytes=5MiB")
+    .arg("--cache=yes") 
+    .arg("--demuxer-max-bytes=32MiB")
     .arg("--demuxer-max-back-bytes=0") // 되돌리는 기능 x
-    .arg("--demuxer-readahead-secs=0.2") //미리 처리 아주약간
+    .arg("--demuxer-readahead-secs=1") //미리 처리 아주약간
     //.arg("--demuxer-thread=no") low buffer usage
 
     //화면 배치
@@ -130,18 +147,20 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
     //코덱 최적화
     .arg("--gpu-api=auto") //auto-safe보다 나음. gpu는 애초에 화면송출에 병목이 어지간해서 없음..
     .arg("--vd-lavc-dr=yes") // no memory-gpu copy
-    .arg("--vo=gpu-next")
+    .arg("--vo=gpu")
     .arg("--gpu-context=auto")
     //.arg("--vd-lavc-threads=??") 쓰레드를 얼마로 해줘야하려나..
-    .arg("hwdec=auto")
-    .arg("--sws-allow-zimg=no")
-    .arg("--scale=bilinear")
-    .arg("--cscale=bilinear")
+    .arg("--hwdec=auto-safe")
+
+    .arg("--profile=fast")     //화면 크기맞춤, 각종 고 오버헤드 옵션 전부 비활성화 
+    //.arg("--sws-allow-zimg=no")
+    //.arg("--scale=bilinear")
+    //.arg("--cscale=bilinear")
     //.arg("--dither-depth=no")계단현상 보정옵션 끄기
     //.arg("--correct-downscaling=no")밝기 보정 옵션 끄기
     //.arg("--linear-downscaling=no") 선형축소 x
     //.arg("--sigmoid-upscaling=no") 확대 x
-    .arg("--msg-level=ffmpeg=error, demuxer=error")
+    .arg("--msg-level=ffmpeg=error,demuxer=error")
     .status();
 
   match status {
