@@ -130,7 +130,7 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
 
     //화면 배치
     .arg("--keepaspect-window=yes")   // 비율 유지
-    .arg("--autofit=30%")             // 모니터 가로 픽셀의 30% 크기에 맞춤
+    .arg("--autofit=40%")             // 모니터 가로 픽셀의 40% 크기에 맞춤
     .arg("--geometry=-0+0")           // 우측 상단 끝 배치
     .arg("--window-maximized=no")
     .arg("--window-minimized=no")
