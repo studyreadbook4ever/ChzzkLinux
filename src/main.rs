@@ -65,7 +65,7 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
     "480" => "2500000",  //480p
     "360" => "1200000", //360p
     "144" => "500000",   //144p
-    //"0" => 라디오모드 추후 제작예정
+    "0" => "500000", //144p, 어차피 버릴거임.
     _ => "0",
   };
 
@@ -109,10 +109,36 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
   let playback_data: PlaybackData = serde_json::from_str(&playback_json)?;
   let hls_url = playback_data.media.iter().find(|m| m.protocol == "HLS").map(|m| &m.path).ok_or("no stream")?;
   println!("Stream get finish!");
-  println!("Starting on TV Mode...");
 
   //starting by mpv library
-  //라디오모드 추가해야...
+  //라디오모드 
+  if quality == 0 {
+    println!("Starting on RADIO Mode...");
+    let status = Command::new("mpv").arg(hls_url)
+      .arg("--hls-bitrate={}", bitrate_limit); // 명목상 144p로 세팅.
+      .arg("--vid=no")
+      .arg("--force-window=no")
+      .arg("--audio-display=no")
+      .arg("--ao=pulse,pipewire,alsa,auto")
+      .arg("--volume=100")
+            
+            // (오디오 데이터만 넉넉히 캐싱)
+      .arg("--audio-buffer=2.0")          // 오디오 버퍼 넉넉하게
+      .arg("--cache=yes")
+      .arg("--demuxer-max-bytes=10MiB")   // 메모리 절약
+      .arg("--demuxer-readahead-secs=10") 
+      .arg("--msg-level=ffmpeg=error,demuxer=error")
+      .status();
+      match status {
+        Ok(_) => println!("stream finish!!"),
+        Err(e) => eprintln!("MPV run failed...{}", e),
+      }
+
+      return Ok(());
+  }
+
+
+  println!("Starting on TV Mode...");
   let status = Command::new("mpv").arg(hls_url).args(if bitrate_limit != "0" { vec![format!("--hls-bitrate={}", bitrate_limit)] } else { vec![] })
     .arg("--ao=pulse,pipewire,alsa,auto")
     .arg("--volume=100")
