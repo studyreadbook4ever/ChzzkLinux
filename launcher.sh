@@ -23,7 +23,7 @@
 #fi
 
 if [ "$#" -lt 1 ]; then
-    echo "사용법: ./launcher.sh <채널명(channels.toml 기준)> [화질(기본:1080)]"
+    echo "사용법: ./launcher.sh <채널명(channels.toml 기준)> <화질 default:1080(1080/720/480/360/144/0)>"
     exit 1
 fi
 
