@@ -12,10 +12,14 @@
 리눅스의 기본적으로 내장된 webKitGTK를 적극적으로 활용해 Chromium의 오버헤드를 줄였습니다 
 
 
-추후 할일 
-~1. Radio Mode  지원완료 > 파라미터에 0 입력하면 됨~
+수정 리스트
 
-2. 코어격리 모드 구현(Rust main코드는 둘 다 호환함. taskset 방식으로 특정 코어에 일 모는 방식으로 launcher.sh구현예정. 지원 배포판:Ubuntu, Fedora, Arch)
-3. 파이썬으로 채널이름 입력하면 channels.toml 갱신시키는 코드 구현('기본적으로 치지직 닉네임은 중복을 허용함(파트너)'<이거때매 여러모로 상황이 애매함)
-4. gui로 소리 조절기능 구현
-5. SoopLinux 구현
+라디오 모드 구현->일반적으로 화면없이 연결은 starvation이 좀 생겨서, 화면을 받되 버리는 로직으로 구현해줬음
+Ctrl C로 프로세스 종료시에 mpv에도 인터럽트가 걸려서 VRAM이 초기화가 안 되는 문제 발생>Graceful Shutdown 인터럽트 비동기 처리로 구현
+
+앞으로 할 수정
+
+1. 코어격리 모드 구현(Rust main코드는 둘 다 호환함. taskset 방식으로 특정 코어에 일 모는 방식으로 launcher.sh구현예정. 지원 배포판:Ubuntu, Fedora, Arch)
+2. channels.toml에 없는 채널이름 입력하면 검색으로 채널 찾아서 방송 연결하고, channels.toml 갱신시키는 코드 구현
+3. gui로 소리크기 조절기능 구현
+4. SoopLinux 구현
