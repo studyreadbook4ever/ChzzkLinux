@@ -40,7 +40,7 @@ BIN_PATH=$(find ./target/release -maxdepth 1 -type f -executable 2>/dev/null | g
 # 핵심 패키지(mpv)가 없거나, cargo가 없거나, 빌드된 실행 파일이 없다면 셋업 모드 가동
 if ! command -v mpv &> /dev/null || ! sudo -u "$REAL_USER" bash -c "source \$HOME/.cargo/env 2>/dev/null || true; command -v cargo" &> /dev/null || [ -z "$BIN_PATH" ]; then
     echo "==================================================="
-    echo " 🛠️ 초기 환경 셋업이 필요합니다. 필수 라이브러리를 설치합니다..."
+    echo " 초기 환경 셋업이 필요합니다. 필수 라이브러리를 설치합니다... 이 과정은 root권한이 필요합니다."
     echo "==================================================="
     
     if [ -f /etc/os-release ]; then
