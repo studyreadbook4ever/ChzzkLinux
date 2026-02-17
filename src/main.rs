@@ -16,7 +16,7 @@ use serde::Deserialize;
 use std::collections::HashMap;
 use std::env;
 use std::fs;
-use std::process::Command;
+use tokio::process::Command; //CtrlC시에 mpv가 인터럽트당해서 문제생기는거 방지용으로 tokio 사용
 
 #[allow(non_snake_case)]
 #[allow(dead_code)]
@@ -111,6 +111,13 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
   let hls_url = playback_data.media.iter().find(|m| m.protocol == "HLS").map(|m| &m.path).ok_or("no stream")?;
   println!("Stream get finish!");
 
+  // 터미널에서 Ctrl+C를 누를 때 Rust랑 동시에 mpv코드까지 메모리 정리 없이 즉사하는 것을 막는 코드.
+  tokio::spawn(async {
+      let _ = tokio::signal::ctrl_c().await;
+      println!("\n[System] 🛑 Ctrl+C 감지! mpv가 잔상을 지우고 안전하게 닫힐 때까지 기다려줍니다...");
+  });
+
+  
   //starting by mpv library
   //라디오모드 
   if quality == "0" {
@@ -189,7 +196,8 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
     //.arg("--linear-downscaling=no") //선형축소 x
     //.arg("--sigmoid-upscaling=no") //확대 x
     .arg("--msg-level=ffmpeg=error,demuxer=error")
-    .status();
+    .status()
+    .await;               //Rust프로세스가 mpv 정리되는거 대기하도록함.
 
   match status {
     Ok(_) => println!("stream finish!!"),
