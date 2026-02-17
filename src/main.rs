@@ -16,7 +16,7 @@ use serde::Deserialize;
 use std::collections::HashMap;
 use std::env;
 use std::fs;
-// mpv의 Graceful Shutdown을 위해 tokio의 비동기 Command 사용
+// mpv의 Graceful Shutdown을 위해 std->tokio 수정
 use tokio::process::Command;
 
 #[allow(non_snake_case)]
