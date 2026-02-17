@@ -16,14 +16,14 @@
 #!/bin/bash
 # 코어 격리가 없는 버전의 launcher(Powered by Gemini 3)
 
-# 1. sudo 권한 확인
-if [ "$EUID" -ne 0 ]; then
-  echo "❌ 이 스크립트는 sudo 권한으로 실행해야 합니다. (예: sudo ./.launcher.sh 랄로 1080)"
-  exit 1
-fi
+# 1. sudo 권한 확인 < 코어격리 없는 버전이라 sudo 필요x!!!
+#if [ "$EUID" -ne 0 ]; then
+#  echo "❌ 이 스크립트는 sudo 권한으로 실행해야 합니다. (예: sudo ./.launcher.sh 랄로 1080)"
+#  exit 1
+#fi
 
 if [ "$#" -lt 1 ]; then
-    echo "사용법: sudo ./.launcher.sh <채널명(channels.toml 기준)> [화질(기본:1080)]"
+    echo "사용법: ./launcher.sh <채널명(channels.toml 기준)> [화질(기본:1080)]"
     exit 1
 fi
 
